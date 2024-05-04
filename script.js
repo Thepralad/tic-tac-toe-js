@@ -33,4 +33,26 @@ const Gameboard = (function (){
    return {updateBoard, displayBoard};
 })();
 
+//Module to populate the board in a fair game flow
+const Player = (function (){
+    let moveCount = 0;
 
+    function takeMove(index){
+        if(moveCount % 2 == 0){
+            Gameboard.updateBoard(index, 1)
+            moveCount++;
+        }
+        else{
+            Gameboard.updateBoard(index, 2)
+            moveCount++;
+        }
+    }
+
+    return{ takeMove }
+})();
+
+Player.takeMove(1);
+Player.takeMove(3);
+Player.takeMove(2);
+Player.takeMove(5);
+Gameboard.displayBoard();
