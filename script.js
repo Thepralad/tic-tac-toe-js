@@ -4,6 +4,9 @@ const Gameboard = (function (){
                         0, 0, 0,
                         0, 0, 0
     ];
+    const getBoard = function () {
+        return gameBoard;
+    }
     const updateBoard = function (index, player){
         
         switch (player) {
@@ -14,9 +17,6 @@ const Gameboard = (function (){
             case 2:
                 gameBoard[index-1] = 'p2';
 
-            default:
-                console.error('Invalid Player!')
-                break;
         }
     }
    const displayBoard = function (){
@@ -30,7 +30,7 @@ const Gameboard = (function (){
         }
    }
 
-   return {updateBoard, displayBoard};
+   return {updateBoard, displayBoard, getBoard};
 })();
 
 //Module to populate the board in a fair game flow
@@ -39,6 +39,7 @@ const Player = (function (){
 
     function takeMove(index){
         if(moveCount % 2 == 0){
+            
             Gameboard.updateBoard(index, 1)
             moveCount++;
         }
@@ -51,8 +52,18 @@ const Player = (function (){
     return{ takeMove }
 })();
 
-Player.takeMove(1);
-Player.takeMove(3);
-Player.takeMove(2);
-Player.takeMove(5);
+const Gameplay = function (){
+
+    const takeInput = function(){
+        input = prompt("Please enter your name", "Harry Potter");
+        Player.takeMove(input);
+    }
+   
+    return {takeInput}
+}
+
+const gameplayObj = Gameplay();
+
+gameplayObj.takeInput();
+
 Gameboard.displayBoard();
