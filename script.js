@@ -1,3 +1,5 @@
+let MOVE_COUNT = 0;
+
 //This is a gameboard module, that returns object with two funtion (updateBoard && displayBoard)
 const Gameboard = (function (){
     const gameBoard = [ 0, 0, 0,
@@ -30,22 +32,21 @@ const Gameboard = (function (){
         }
    }
 
-   return {updateBoard, displayBoard, getBoard};
+   return {updateBoard, displayBoard, gameBoard};
 })();
 
 //Module to populate the board in a fair game flow
 const Player = (function (){
-    let moveCount = 0;
 
     function takeMove(index){
-        if(moveCount % 2 == 0){
+        if(MOVE_COUNT % 2 == 0){
             
             Gameboard.updateBoard(index, 1)
-            moveCount++;
+            MOVE_COUNT++;
         }
         else{
             Gameboard.updateBoard(index, 2)
-            moveCount++;
+            MOVE_COUNT++;
         }
     }
 
@@ -54,16 +55,72 @@ const Player = (function (){
 
 const Gameplay = function (){
 
+    const winCheck = function(){
+        let hasWon = false;
+        if(Gameboard.gameBoard[0] == Gameboard.gameBoard[1] && Gameboard.gameBoard[1] == Gameboard.gameBoard[2]){
+            if(Gameboard.gameBoard[0] == 'p1' || Gameboard.gameBoard[0] == 'p2'){
+                hasWon = true;
+            }
+        }
+        if(Gameboard.gameBoard[3] == Gameboard.gameBoard[4] && Gameboard.gameBoard[4] == Gameboard.gameBoard[5]){
+            if(Gameboard.gameBoard[3] == 'p1' || Gameboard.gameBoard[3] == 'p2'){
+                hasWon = true;
+            }
+        }
+        if(Gameboard.gameBoard[6] == Gameboard.gameBoard[7] && Gameboard.gameBoard[7] == Gameboard.gameBoard[8]){
+            if(Gameboard.gameBoard[6] == 'p1' || Gameboard.gameBoard[6] == 'p2'){
+                hasWon = true;
+            }
+        }
+        if(Gameboard.gameBoard[0] == Gameboard.gameBoard[3] && Gameboard.gameBoard[3] == Gameboard.gameBoard[6]){
+            if(Gameboard.gameBoard[0] == 'p1' || Gameboard.gameBoard[0] == 'p2'){
+                hasWon = true;
+            }
+        }
+        if(Gameboard.gameBoard[1] == Gameboard.gameBoard[4] && Gameboard.gameBoard[4] == Gameboard.gameBoard[7]){
+            if(Gameboard.gameBoard[1] == 'p1' || Gameboard.gameBoard[1] == 'p2'){
+                hasWon = true;
+            }
+        }
+        if(Gameboard.gameBoard[2] == Gameboard.gameBoard[5] && Gameboard.gameBoard[8] == Gameboard.gameBoard[2]){
+            if(Gameboard.gameBoard[2] == 'p1' || Gameboard.gameBoard[2] == 'p2'){
+                hasWon = true;
+            }
+        }
+        if(Gameboard.gameBoard[0] == Gameboard.gameBoard[4] && Gameboard.gameBoard[8] == Gameboard.gameBoard[2]){
+            if(Gameboard.gameBoard[0] == 'p1' || Gameboard.gameBoard[0] == 'p2'){
+                hasWon = true;
+            }
+        }
+        if(Gameboard.gameBoard[2] == Gameboard.gameBoard[4] && Gameboard.gameBoard[6] == Gameboard.gameBoard[2]){
+            if(Gameboard.gameBoard[2] == 'p1' || Gameboard.gameBoard[2] == 'p2'){
+                hasWon = true;
+            }
+        }
+        return hasWon;
+    }
     const takeInput = function(){
-        input = prompt("Please enter your name", "Harry Potter");
+        input = prompt("Enter Position");
         Player.takeMove(input);
     }
-   
-    return {takeInput}
+    
+    const gameLoop = function(){
+        while(!winCheck()){
+            takeInput();
+        }
+        if(MOVE_COUNT % 2 == 0){
+            console.log('p2 wins');
+        }
+        else{
+            console.log('p1 wins');
+        }
+    }
+    return {gameLoop}
 }
 
 const gameplayObj = Gameplay();
 
-gameplayObj.takeInput();
+
+gameplayObj.gameLoop();
 
 Gameboard.displayBoard();
