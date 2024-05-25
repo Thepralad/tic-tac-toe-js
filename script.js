@@ -53,6 +53,20 @@ const Gameplay = (function (){
     function Player(name, marker){
         return {name, marker}
     }
+    function checkDraw(){
+        const board = Gameboard.board;
+        let isDraw = true;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if(board[i][j] === '0'){
+                    isDraw = false;
+                    return isDraw;
+                }
+            }
+        }
+        return isDraw;
+
+    }
 
     function checkWin() {
         let hasWon = false;
@@ -97,8 +111,12 @@ const Gameplay = (function (){
 
             if (checkWin()) {
                 Gameboard.board = [];
-                prompt((Gameboard.COUNTER % 2) === 0 ? `P1 won` : `P2 won`)
+                console.log((Gameboard.COUNTER % 2) === 0 ? `P1 won` : `P2 won`)
             } 
+            else if(checkDraw()){
+                Gameboard.board = [];
+                console.log('Its draw');
+            }
             Gameboard.COUNTER++;
         
     }
