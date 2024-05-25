@@ -6,8 +6,10 @@
 
 .board{
     width: 200px;
+    display: grid;
+    grid-template-columns: 5rem 5rem 5rem;
+    grid-template-rows: 5rem 5rem 5rem;
 }
 .board button{
-    height: 50px;
-    width: 50px;
+   font-size: 3rem;
 }
