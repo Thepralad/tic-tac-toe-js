@@ -1,4 +1,5 @@
 const Gameboard = (function (){
+
     let COUNTER = 0;
     const row = 3;
     const column = 3;
@@ -43,8 +44,78 @@ const Gameboard = (function (){
         }
         COUNTER++;
     }
-    return {board, updateBoard};
+
+    return {board, COUNTER, updateBoard};
 })();
+
+const Gameplay = (function (){
+    
+    function Player(name, marker){
+        return {name, marker}
+    }
+
+    function checkWin() {
+        let hasWon = false;
+        const board = Gameboard.board;
+        
+        // Check rows
+        for (let i = 0; i < 3; i++) {
+            if (board[i][0] !== '0' && board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
+                hasWon = true;
+                break;
+            }
+        }
+        
+        // Check columns
+        for (let j = 0; j < 3; j++) {
+            if (board[0][j] !== '0' && board[0][j] === board[1][j] && board[1][j] === board[2][j]) {
+                hasWon = true;
+                break;
+            }
+        }
+        
+        // Check diagonals
+        if (board[0][0] !== '0' && board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
+            hasWon = true;
+        } else if (board[0][2] !== '0' && board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+            hasWon = true;
+        }
+        
+        return hasWon;
+    }
+
+    function gameStart(){
+        let player1 = prompt('Player 1:')
+        let player2 = prompt('Player 2:')
+        const p1 = Player(player1, 'X');
+        const p2 = Player(player2, 'O');
+        return {p1, p2}
+    }
+
+    function gameloop() {
+        const gamestart = gameStart();
+        while (!checkWin()) {
+            
+            let input = prompt((Gameboard.COUNTER % 2) === 0 ? `${gamestart.p1.name}'s turn` : `${gamestart.p2.name}'s turn`);
+            Gameboard.updateBoard(parseInt(input));
+
+            if (checkWin()) {
+                console.log((Gameboard.COUNTER % 2) === 0 ? `${gamestart.p1.name} won!` : `${gamestart.p2.name} won!`);
+            } 
+            Gameboard.COUNTER++;
+        }
+    }
+
+   return {gameloop, gameStart};
+})();
+
+
+
+
+
+
+
+
 
 
 
