@@ -92,28 +92,45 @@ const Gameplay = (function (){
         return {p1, p2}
     }
 
-    function gameloop() {
-        const gamestart = gameStart();
-        while (!checkWin()) {
-            
-            let input = prompt((Gameboard.COUNTER % 2) === 0 ? `${gamestart.p1.name}'s turn` : `${gamestart.p2.name}'s turn`);
+    function gameloop(input) {
             Gameboard.updateBoard(parseInt(input));
 
             if (checkWin()) {
-                console.log((Gameboard.COUNTER % 2) === 0 ? `${gamestart.p1.name} won!` : `${gamestart.p2.name} won!`);
+                Gameboard.board = [];
+                prompt((Gameboard.COUNTER % 2) === 0 ? `P1 won` : `P2 won`)
             } 
             Gameboard.COUNTER++;
-        }
+        
     }
 
    return {gameloop, gameStart};
 })();
 
+const DisplayHandler = function(){
+    const ids = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const cells = new Array();
 
+    for (let i = 0; i < ids.length; i++) {
+        cells[i] = document.getElementById(ids[i]);
+    }
+    const updateDom = function(){
+        let COUNTER = 0;
+        cells.forEach((button) => {
+            button.addEventListener("click", () => {
+                document.getElementById(button.id).textContent = COUNTER % 2 === 0 ? 'X' : 'O';
+                Gameplay.gameloop(button.id);
+                COUNTER++;
+            });
+          });
+        
+    }
+    
+    return{updateDom, cells};
+};
 
+const dh = DisplayHandler();
 
-
-
+dh.updateDom()
 
 
 
