@@ -2,14 +2,46 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1{
+    padding-left: 36px;
+    font-size: 3rem;
+}
+
+body {
+    height: 100vh; /* Set the height to 100% of the viewport height */
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    align-items: center;
+    background-color: antiquewhite;
+    gap: 90px;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
 }
 
 .board{
+    margin-right: 85px;
     width: 200px;
     display: grid;
-    grid-template-columns: 5rem 5rem 5rem;
-    grid-template-rows: 5rem 5rem 5rem;
+    grid-template-columns: 6rem 6rem 6rem;
+    grid-template-rows: 6rem 6rem 6rem;
 }
 .board button{
    font-size: 3rem;
+}
+
+.container p{
+    font-size: 1.2rem;
+}
+
+#restartBtn{
+    width: 8rem;
+    height: 2rem;
 }
