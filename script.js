@@ -45,6 +45,7 @@ const Gameboard = (function (){
         }
         board[outer][inner] = marker;
     }
+
     const getElementOfBoard = function(input){
         let counter = 0;
         let inner = -1;
@@ -65,12 +66,16 @@ const Gameboard = (function (){
 
 })();
 
+const Player = function(name){
+    return {name};
+};
+
 //This module takes care of all the Gameplay mechanics
 const Gameplay = (function (){
+
     
     //This function check if the game is draw or not and
     //returns a boolean value accordingly.
-
     function checkDraw(){
         const board = Gameboard.board;
         let isDraw = true;
@@ -129,7 +134,7 @@ const Gameplay = (function (){
             if (hasWon()) {
 
                 Gameboard.board = [];
-                document.getElementById('result').textContent = (Gameboard.COUNTER % 2) === 0 ? `P1 won` : `P2 won`;
+                document.getElementById('turnTracker').textContent = (Gameboard.COUNTER % 2) === 0 ? `Player 1 Wins!` : `Player 2 Wins!`;;
 
             } 
             // or if the game ends to draw, it resets the 3x3 board
@@ -137,7 +142,7 @@ const Gameplay = (function (){
             else if(checkDraw()){
 
                 Gameboard.board = [];
-                document.getElementById('result').textContent = 'The game is draw';
+                document.getElementById('turnTracker').textContent = 'The game is draw';
 
             }
             Gameboard.COUNTER++;
@@ -168,6 +173,7 @@ const DisplayHandler = function(){
 
                 if(!Gameplay.hasWon() && Gameboard.getElementOfBoard(button.id) === '0'){
 
+                    document.getElementById('turnTracker').textContent = COUNTER % 2 === 0 ? `Player 2's turn [O]` : `Player 1's turn [X]`
                     document.getElementById(button.id).textContent = COUNTER % 2 === 0 ? 'X' : 'O';
                     Gameplay.gameloop(button.id);
                     COUNTER++;
@@ -176,9 +182,12 @@ const DisplayHandler = function(){
 
             });
           });
+
+          document.getElementById('restartBtn').addEventListener('click', () => {
+            location.reload();
+          });
         
     }
-    
     return{updateDom, cells};
 };
 
