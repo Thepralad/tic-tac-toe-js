@@ -5,53 +5,64 @@ const Gameboard = (function (){
     //To keep track of the turn
     let COUNTER = 0;
 
-    //Creates a 3x3 Board.
+    
     const row = 3;
     const column = 3;
     const board = [];
+
+    //Creates a 3x3 Board.
     for (let i = 0; i < row; i++) {
+
         board[i] = [];
+
         for(let j = 0; j < column; j++){
+
             board[i].push('0');
+
         }
+
     }
 
     //This method updates the board - takes 1-9 as input.
     const updateBoard = function(input){
         let marker = (COUNTER % 2) === 0 ? 'X' : 'O';
-        switch (input) {
-            case 1:
-                board[0][0] = marker;
-                break;
-            case 2:
-                board[0][1] = marker;
-                break;
-            case 3:
-                board[0][2] = marker;
-                break;
-            case 4:
-                board[1][0] = marker;
-                break;
-            case 5:
-                board[1][1] = marker;
-                break;
-            case 6:
-                board[1][2] = marker;
-                break;
-            case 7:
-                board[2][0] = marker;
-                break;
-            case 8:
-                board[2][1] = marker;
-                break;
-            case 9:
-                board[2][2] = marker;
-                break;
-        }
+        setElementOfBoard(input,marker)
         COUNTER++;
     }
 
-    return {board, COUNTER, updateBoard};
+    const setElementOfBoard = function(input, marker){
+        let counter = 0;
+        let inner = -1;
+        let outer = 0;
+
+        while(counter < input){
+            counter++;
+            inner++;
+            if(inner >= 3){
+                inner = 0;
+                outer++;
+            }
+        }
+        board[outer][inner] = marker;
+    }
+    const getElementOfBoard = function(input){
+        let counter = 0;
+        let inner = -1;
+        let outer = 0;
+
+        while(counter < input){
+            counter++;
+            inner++;
+            if(inner >= 3){
+                inner = 0;
+                outer++;
+            }
+        }
+        return board[outer][inner];
+    }
+
+    return {board, COUNTER, updateBoard, getElementOfBoard};
+
 })();
 
 //This module takes care of all the Gameplay mechanics
@@ -59,14 +70,20 @@ const Gameplay = (function (){
     
     //This function check if the game is draw or not and
     //returns a boolean value accordingly.
+
     function checkDraw(){
         const board = Gameboard.board;
         let isDraw = true;
+
         for (let i = 0; i < 3; i++) {
+
             for (let j = 0; j < 3; j++) {
+
                 if(board[i][j] === '0'){
+
                     isDraw = false;
                     return isDraw;
+
                 }
             }
         }
@@ -110,14 +127,18 @@ const Gameplay = (function (){
 
             //if game is over, it logs who won the game
             if (hasWon()) {
+
                 Gameboard.board = [];
-                console.log((Gameboard.COUNTER % 2) === 0 ? `P1 won` : `P2 won`)
+                document.getElementById('result').textContent = (Gameboard.COUNTER % 2) === 0 ? `P1 won` : `P2 won`;
+
             } 
             // or if the game ends to draw, it resets the 3x3 board
             //array and simple prints the message.
             else if(checkDraw()){
+
                 Gameboard.board = [];
-                console.log('Its draw');
+                document.getElementById('result').textContent = 'The game is draw';
+
             }
             Gameboard.COUNTER++;
         
@@ -137,17 +158,22 @@ const DisplayHandler = function(){
         cells[i] = document.getElementById(i);
     }
 
-    //Updates the DOM(button), when a particular button is pressed.
     const updateDom = function(){
         //To keep track of the turn
         let COUNTER = 0;
+
+        //Updates the DOM(button), when a particular button is pressed.
         cells.forEach((button) => {
             button.addEventListener("click", () => {
-                if(!Gameplay.hasWon()){
+
+                if(!Gameplay.hasWon() && Gameboard.getElementOfBoard(button.id) === '0'){
+
                     document.getElementById(button.id).textContent = COUNTER % 2 === 0 ? 'X' : 'O';
                     Gameplay.gameloop(button.id);
                     COUNTER++;
+
                 }
+
             });
           });
         
